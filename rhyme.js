@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');
 const url = require('url');
+const fortune = require('./lib/fortune.js');
 
 
 const app = express();
@@ -10,10 +11,18 @@ app.engine('handlebars', handlebars.engine);
 app.set('view engine', "handlebars");
 app.set('port', process.env.PORT || 3000);
 
+app.use(function(req, res, next){
+	res.locals.showTests = app.get('env') !== 'production' && req.query.test === '1';
+	next();
+});
+
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res){
-	res.render('home');
+	res.render('home', {
+		fortune: fortune.getFortune(),
+		pageTestScript: '/qa/tests-home.js',
+	} );
 });
 
 app.get('/about', function(req, res){
@@ -22,7 +31,7 @@ app.get('/about', function(req, res){
 
 app.use(function(req, res){
 	res.status(404);
-	res.render('404')
+	res.render('404');
 });
 
 app.use(function(err, req, res, next){

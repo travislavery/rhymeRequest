@@ -9,25 +9,9 @@ body, html{
 }
 
 #navbarTop {
-	top: 80%;
+	top: 5px;
 }
 
 #aboutUs {
-	background-color: red;
-}
-
-#embroidery {
 	background-color: blue;
-}
-
-#screenPrinting {
-	background-color: green;
-}
-
-#vinyl {
-	background-color: purple;
-}
-
-#extras {
-	background-color: black;
 }

@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Song Generator</title>
+    {{#if showTests}}
+      <link rel="stylesheet" href="/vendor/mocha.css">
+    {{/if}}
 
     <!-- Bootstrap -->
     <link href="/css/theme.css" rel="stylesheet">
@@ -42,6 +45,7 @@
           </div>
         </div>
       </nav>
+      <blockquote>{{{fortune}}}</blockquote>
     </div>
 
     <div id="aboutUs" class="mainSection row">
@@ -59,8 +63,22 @@
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="./js/bootstrap.js"></script>
+    <script src="./vendor/bootstrap.js"></script>
     <script src='./js/main.js'></script>
+    {{#if showTests}}
+      <div id='mocha'></div>
+      <script src="/vendor/mocha.js"></script>
+      <script src="/vendor/chai.js"></script>
+      <script>
+        mocha.ui('tdd');
+        var assert = chai.assert;
+      </script>
+      <script src="/qa/tests-global.js"></script>
+      {{#if pageTestScript}}
+        <script src="{{pageTestScript}}"></script>
+      {{/if}}
+      <script>mocha.run();</script>
+    {{/if}}
   </body>
 
 </html>
