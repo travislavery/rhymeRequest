@@ -1,0 +1,33 @@
+body, html{
+	height:100%;
+	width: 99%;
+}
+
+#home {
+	width: 100%;
+	height: 100%;
+}
+
+#navbarTop {
+	top: 80%;
+}
+
+#aboutUs {
+	background-color: red;
+}
+
+#embroidery {
+	background-color: blue;
+}
+
+#screenPrinting {
+	background-color: green;
+}
+
+#vinyl {
+	background-color: purple;
+}
+
+#extras {
+	background-color: black;
+}
