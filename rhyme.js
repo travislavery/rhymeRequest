@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const url = require('url');
 const fortune = require('./lib/fortune.js');
+const rhymes = require('./lib/requestRhyme.js');
 
 
 const app = express();
@@ -21,6 +22,7 @@ app.use(express.static(__dirname + '/public'));
 app.get('/', function(req, res){
 	res.render('home', {
 		fortune: fortune.getFortune(),
+		rhymes: rhymes.requestRhyme('grown'),
 		pageTestScript: '/qa/tests-home.js',
 	} );
 });
