@@ -4,6 +4,11 @@ const url = require('url');
 const fortune = require('./lib/fortune.js');
 const rhymes = require('./lib/requestRhyme.js');
 
+var rhymeRequestObject = {
+	word:"yellow",
+	number:3,
+	type:"rhyme"
+};
 
 const app = express();
 const handlebars = require('express-handlebars').create({ defaultLayout: 'main'});
@@ -22,7 +27,7 @@ app.use(express.static(__dirname + '/public'));
 app.get('/', function(req, res){
 	res.render('home', {
 		fortune: fortune.getFortune(),
-		rhymes: rhymes.requestRhyme('grown'),
+		rhymes: rhymes.requestRhyme(rhymeRequestObject),
 		pageTestScript: '/qa/tests-home.js',
 	} );
 });
