@@ -1,52 +1,62 @@
 const express = require('express');
-const http = require('http');
 const url = require('url');
 const fortune = require('./lib/fortune.js');
 const rhymes = require('./lib/requestRhyme.js');
+const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+//const users = require('./routes/users');
+const handlebars = require('express-handlebars').create({ defaultLayout: 'main'});
 
-var rhymeRequestObject = {
-	word:"yellow",
-	number:3,
-	type:"rhyme"
+let rhymeRequestObject = {
+	word:"green",
+	number:5,
+	type:"rhyme",
+	topic:"farm"
 };
 
-const app = express();
-const handlebars = require('express-handlebars').create({ defaultLayout: 'main'});
+
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', "handlebars");
 app.set('port', process.env.PORT || 3000);
 
-app.use(function(req, res, next){
+app.use((req, res, next) => {
 	res.locals.showTests = app.get('env') !== 'production' && req.query.test === '1';
 	next();
 });
 
 app.use(express.static(__dirname + '/public'));
 
-app.get('/', function(req, res){
+app.get('/', (req, res) => {
+	let fortuneReq = fortune.getFortune();
+	let rhymesReq = rhymes.requestRhyme(rhymeRequestObject)
 	res.render('home', {
-		fortune: fortune.getFortune(),
-		rhymes: rhymes.requestRhyme(rhymeRequestObject),
+		fortune: fortuneReq,
+		rhymes: rhymesReq,
 		pageTestScript: '/qa/tests-home.js',
 	} );
 });
 
-app.get('/about', function(req, res){
+app.get('/about', (req, res) => {
 	res.render('about');
 });
 
-app.use(function(req, res){
+app.use((req, res) => {
 	res.status(404);
 	res.render('404');
 });
 
-app.use(function(err, req, res, next){
+app.use((err, req, res, next) => {
 	console.error(err.stack);
 	res.status(500);
 	res.render('500');
 });
 
-app.listen(app.get('port'), function(){
+app.listen(app.get('port'), () => {
 	console.log('Express started on http://localhost' + app.get('port') + '; press Ctrl-C to terminate.');
 });
+
+io.on('connection', function(socket) {
+	socket.on()
+})

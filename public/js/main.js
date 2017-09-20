@@ -20,6 +20,7 @@ var actionBegin = (function() {
 		}
 	});
 
+	$('#testButton').on('click', testObjectCreation());
 	
 })();
 
@@ -30,4 +31,13 @@ function setSectionHeight() {
 
 function setHeight100(object) {
 	object.css('height', '100%');
+}
+
+function testObjectCreation() {
+	var rhymeRequestObject = {
+		word:"blue",
+		number:5,
+		type:"rhyme"
+	};
+	
 }
