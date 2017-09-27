@@ -9,10 +9,10 @@ const io = require('socket.io')(server);
 const handlebars = require('express-handlebars').create({ defaultLayout: 'main'});
 
 let rhymeRequestObject = {
-	word:"green",
-	number:5,
-	type:"rhyme",
-	topic:"farm"
+	word:"example",
+	number:10,
+	type:"adjective",
+	topic:""
 };
 
 
@@ -30,7 +30,7 @@ app.use(express.static(__dirname + '/public'));
 
 app.get('/', (req, res) => {
 	let fortuneReq = fortune.getFortune();
-	let rhymesReq = rhymes.requestRhyme(rhymeRequestObject)
+	let rhymesReq = [];
 	res.render('home', {
 		fortune: fortuneReq,
 		rhymes: rhymesReq,
@@ -57,6 +57,13 @@ app.listen(app.get('port'), () => {
 	console.log('Express started on http://localhost' + app.get('port') + '; press Ctrl-C to terminate.');
 });
 
+
+server.listen(80);
 io.on('connection', function(socket) {
-	socket.on()
-})
+	socket.emit('news', { hello: 'world' });
+	socket.on('get a rhyme', function(data){
+		let responseObject = rhymes.requestRhyme(data);
+		socket.emit('rhymesRecieved', {responseObject});
+	});
+});
+

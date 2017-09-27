@@ -1,3 +1,4 @@
+
 var actionBegin = (function() {
 	setSectionHeight();
 
@@ -20,8 +21,15 @@ var actionBegin = (function() {
 		}
 	});
 
-	$('#testButton').on('click', testObjectCreation());
-	
+    socket.on('news', function (data) {
+    	console.log(data);
+    });
+	$('#testBtn').on('click', getWordToRhyme);
+	var currentSentenceArray = [];
+	socket.on('rhymesRecieved', function(data) {
+		console.log(data.responseObject);
+		postToPage(data, currentSentenceArray);
+	});
 })();
 
 function setSectionHeight() {
@@ -33,11 +41,43 @@ function setHeight100(object) {
 	object.css('height', '100%');
 }
 
-function testObjectCreation() {
+function getWordToRhyme() {
+	var wordToRhyme = $("#rhymeSubject").val() || "";
+	var numberRequested = Number($("#numberRequested").val()) || 10;
+	var typeOfRequest = $("#typeOfRequest").val();
+	var topicOfRequest = $("#topicSubject").val() || "";
 	var rhymeRequestObject = {
-		word:"blue",
-		number:5,
-		type:"rhyme"
+		word: wordToRhyme,
+		number: numberRequested,
+		type: typeOfRequest,
+		topic: topicOfRequest
 	};
-	
+	sendObjectRequest(rhymeRequestObject);
+}
+
+function sendObjectRequest(object) {
+	socket.emit('get a rhyme', object);
+}
+
+function getRandom(data, currentSentence) {
+	var randomChoice = Math.floor(Math.random() * 10);
+	currentSentence.push(data[randomChoice]);
+}
+
+function makeIntoSentence(array) {
+	var putTogether = ''
+	array.forEach(function(word) {
+		putTogether = putTogether + word + " ";
+	});
+	return putTogether;
+}
+
+function postToPage (data, currentSentenceArray) {
+	if (Array.isArray(data.responseObject.words)) {
+		getRandom(data.responseObject.words, currentSentenceArray);
+		var finishedSentence = makeIntoSentence(currentSentenceArray);
+		$('#newlyRecievedRhymes').text(finishedSentence);
+	} else {
+		$('#newlyRecievedRhymes').text(data.responseObject);
+	}
 }

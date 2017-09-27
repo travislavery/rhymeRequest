@@ -47,7 +47,45 @@
       </nav>
       <blockquote>{{{fortune}}}</blockquote>
       <p id="rhymesTestP">{{{rhymes}}}</p>
-      <button id="testButton" class="btn btn-default">Submit</button>
+      <div class="container-fluid">
+        <form method='post' enctype="text/plain" class="form-horizontal" id="contactForm">
+          <div class="form-group">
+            <label for="rhymeSubject" class="control-label col-sm-3">Word to Send</label>
+            <div class="col-sm-5">
+              <input type="text" autofocus="" required="" id="rhymeSubject" placeholder="Word to Rhyme" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="topicSubject" class="control-label col-sm-3">Topic</label>
+            <div class="col-sm-5">
+              <input type="text" autofocus="" required="" id="topicSubject" placeholder="Topic" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="numberRequested" class="control-label col-sm-3">Number Requested</label>
+            <div class="col-sm-3">
+              <input type="number" autofocus="" required="" id="numberRequested" placeholder="Number Needed" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="typeOfRequest" class="control-label col-sm-3">Type</label>
+            <div class="col-sm-3">
+              <select id='typeOfRequest' class="form-control">
+                <option value="rhyme">Rhyme</option>
+                <option value="adjective">Adjective</option>
+                <option value="trigger">Trigger</option>
+                <option value="next">Next Word</option>
+                <option value="previous">Previous Word</option>
+                <option value="soundsLike">Sounds Like</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group col-sm-5 col-sm-push-5 col-md-push-5">
+            <button type="button" id="testBtn" class="btn btn-default">Submit</button>
+          </div>
+        </form>
+      </div>
+      <blockquote id='newlyRecievedRhymes'></blockquote>
     </div>
 
     <div id="aboutUs" class="mainSection row">
@@ -66,9 +104,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="./vendor/bootstrap.js"></script>
-    <script src='./js/main.js'></script>
     <script src="./vendor/socket.io.js"></script>
-
+    <script>
+      var socket = io.connect('http://localhost');
+    </script>
+    <script src='./js/main.js'></script>
     {{#if showTests}}
       <div id='mocha'></div>
       <script src="/vendor/mocha.js"></script>
